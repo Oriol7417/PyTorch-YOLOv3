@@ -5,7 +5,20 @@ YOLOv4 and YOLOv7 weights are also compatible with this implementation.
 
 [![CI](https://github.com/eriklindernoren/PyTorch-YOLOv3/actions/workflows/main.yml/badge.svg)](https://github.com/eriklindernoren/PyTorch-YOLOv3/actions/workflows/main.yml) [![PyPI pyversions](https://img.shields.io/pypi/pyversions/pytorchyolo.svg)](https://pypi.python.org/pypi/pytorchyolo/) [![PyPI license](https://img.shields.io/pypi/l/pytorchyolo.svg)](LICENSE)
 
-## Installation
+## Installation for Windows
+
+```
+git clone https://github.com/Oriol7417/PyTorch-YOLOv3.git
+cd PyTorch-YOLOv3/
+```
+
+#### Download pretrained weights
+```bash
+cd weights
+download_weights.bat
+```
+
+## Installation for Linux
 ### Installing from source
 
 For normal training and evaluation we recommend installing the package from source using a poetry virtual environment.
