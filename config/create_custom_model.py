@@ -1,5 +1,7 @@
 import os
 import argparse
+import numpy as np
+import random
 
 
 def get_file_list(path, extension):
@@ -17,6 +19,18 @@ def get_num_lines(file_path):
     with open(file_path, 'r') as fp:
         lines = len(fp.readlines())
     return lines
+
+def train_valid_split(X, valid_size=0.2, random_state=1004):   
+    valid_num = int(len(X) * valid_size)
+    train_num = len(X) - valid_num
+
+    random.seed(random_state)
+    random.shuffle(X)
+    X_train = X[:train_num]
+    X_valid = X[train_num:]
+    X_train.sort()
+    X_valid.sort()
+    return X_train, X_valid
 
 def edit_template(template_file_path, save_file_path, num_classes, num_filters):
     # Read template file
@@ -39,12 +53,11 @@ def run():
     dataset_path = os.path.join('data', args.name)
     image_path = os.path.join(dataset_path, 'images')
     image_list = get_file_list(image_path, '.jpg')
-    txt_list = get_file_list(image_path, '.txt')
-    assert len(image_list) == len(txt_list), 'The number of image files and the number of text files are different in training dataset.'
+    image_list_train, image_list_valid = train_valid_split(image_list)
     train_txt_file_path = os.path.join(dataset_path, 'train.txt')
     valid_txt_file_path = os.path.join(dataset_path, 'valid.txt')
-    save_list(train_txt_file_path, image_list)
-    save_list(valid_txt_file_path, txt_list)
+    save_list(train_txt_file_path, image_list_train)
+    save_list(valid_txt_file_path, image_list_valid)
 
     # Get number of classes and number of filters
     num_classes = get_num_lines(args.classes)

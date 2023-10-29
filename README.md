@@ -49,13 +49,15 @@ Copy images and labels into data/{NAME}/images. Copy {NAME}.names file into data
 Predefined mask dataset: [link](http://aimlab.synology.me:5000/sharing/dSGCrHFzE) name-modified by https://github.com/VictorLin000/YOLOv3_mask_detect.
 
 ```
-python config/create_custom_model.py --name {NAME} --classes data/{NAME}/{NAME}.names
+python config\create_custom_model.py --name {NAME} --classes data\{NAME}\{NAME}.names
 # Example: mask
-python config/create_custom_model.py --name mask --classes data/mask/mask.names
+python config\create_custom_model.py --name mask --classes data\mask\mask.names
 ```
 #### Train dataset
 ```
-python train --data config/coco.data  --pretrained_weights weights/darknet53.conv.74
+python train.py --data config\{NAME}.data  --pretrained_weights {PRETRAINED_WEIGHTS}
+$ Example: mask
+python train.py --data config\mask.data  --pretrained_weights weights\darknet53.conv.74
 ```
 
 ## Installation for Linux
