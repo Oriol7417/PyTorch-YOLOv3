@@ -7,9 +7,20 @@ YOLOv4 and YOLOv7 weights are also compatible with this implementation.
 
 ## Installation for Windows
 
+### Package requirements
+```
+conda install pytorch==1.13.0 torchvision==0.14.0 torchaudio==0.13.0 pytorch-cuda=11.7 -c pytorch -c nvidia
+conda install -c anaconda pyqt
+conda install tqdm
+conda install imgaug
+pip install opencv-python
+```
+
+### Example of Inferene  
 ```
 git clone https://github.com/Oriol7417/PyTorch-YOLOv3.git
 cd PyTorch-YOLOv3/
+python detect_webcam.py
 ```
 
 #### Download pretrained weights

@@ -4,10 +4,20 @@ import matplotlib.pyplot as plt
 import cv2
 import argparse
 import time
+import os 
 
 from pytorchyolo import detect, models
 from pytorchyolo.utils.utils import load_classes
 
+def save_image(img, path, file_prefix):
+    if not os.path.exists(path):
+        os.makedirs(path)
+        
+    file_list = os.listdir(path)
+    file_list_log = [file for file in file_list if file.startswith(file_prefix)]
+    count = 1 + len(file_list_log)
+    file_path = os.path.join(path, file_prefix + '{0}.jpg'.format(count))
+    cv2.imwrite(file_path, img)
 
 def draw_text(img, text,
           font=cv2.FONT_HERSHEY_PLAIN,
@@ -31,10 +41,11 @@ def run():
     parser.add_argument("-m", "--model", type=str, default="config/yolov3.cfg", help="Path to model definition file (.cfg)")
     parser.add_argument("-w", "--weights", type=str, default="weights/yolov3.weights", help="Path to weights or checkpoint file (.weights or .pth)")
     parser.add_argument("-c", "--classes", type=str, default="data/coco.names", help="Path to classes label file (.names)")
+    args = parser.parse_args()
 
     # Load the YOLO model
-    model = models.load_model("config/yolov3.cfg", "weights/yolov3.weights")
-    classes = load_classes("data/coco.names")
+    model = models.load_model(args.model, args.weights)
+    classes = load_classes(args.classes)
     
     # Set Bounding-box colors
     cmap = plt.get_cmap("tab20b")
@@ -81,8 +92,11 @@ def run():
             cv2.imshow('webcam', img)
 
             # close when pushed esc key
-            if cv2.waitKey(1) & 0xFF == 27: 
+            key = cv2.waitKey(1)
+            if key == ord('q'):
                 break
+            elif key == ord('c'):
+                save_image(img, 'output', 'capture_')
                         
     cap.release()
     cv2.destroyAllWindows()
