@@ -5,10 +5,15 @@ YOLOv4 and YOLOv7 weights are also compatible with this implementation.
 
 [![CI](https://github.com/eriklindernoren/PyTorch-YOLOv3/actions/workflows/main.yml/badge.svg)](https://github.com/eriklindernoren/PyTorch-YOLOv3/actions/workflows/main.yml) [![PyPI pyversions](https://img.shields.io/pypi/pyversions/pytorchyolo.svg)](https://pypi.python.org/pypi/pytorchyolo/) [![PyPI license](https://img.shields.io/pypi/l/pytorchyolo.svg)](LICENSE)
 
-## Installation for Windows
+## Run on Windows
 
-### Package requirements
+### Install CUDA
+CUDA 11.7.0: [Link](https://developer.nvidia.com/cuda-11-7-0-download-archive)
+
+### Install packages
 ```
+conda create -n yolo
+conda activate yolo
 conda install pytorch==1.13.0 torchvision==0.14.0 torchaudio==0.13.0 pytorch-cuda=11.7 -c pytorch -c nvidia
 conda install -c anaconda pyqt
 conda install tqdm
@@ -16,12 +21,19 @@ conda install imgaug
 pip install opencv-python
 ```
 
-### Example of Inferene  
+### Example of Inference  
+#### Example using several images
 ```
-git clone https://github.com/Oriol7417/PyTorch-YOLOv3.git
-cd PyTorch-YOLOv3/
+python detect_images.py
+```
+
+#### Example using webcam
+```
 python detect_webcam.py
 ```
+### Train custom data
+
+
 
 #### Download pretrained weights
 ```bash
