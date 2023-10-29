@@ -49,16 +49,36 @@ Copy images and labels into data/{NAME}/images. Copy {NAME}.names file into data
 Predefined mask dataset: [link](http://aimlab.synology.me:5000/sharing/dSGCrHFzE) name-modified by https://github.com/VictorLin000/YOLOv3_mask_detect.
 
 ```
-python config\create_custom_model.py --name {NAME} --classes data\{NAME}\{NAME}.names
+python config/create_custom_model.py --name {NAME} --classes data/{NAME}/{NAME}.names
 # Example: mask
-python config\create_custom_model.py --name mask --classes data\mask\mask.names
+python config/create_custom_model.py --name mask --classes data/mask/mask.names
 ```
 #### Train dataset
 ```
-python train.py --data config\{NAME}.data  --pretrained_weights {PRETRAINED_WEIGHTS}
+python train.py --data config/{NAME}.data  --pretrained_weights {PRETRAINED_WEIGHTS}
 $ Example: mask
-python train.py --data config\mask.data  --pretrained_weights weights\darknet53.conv.74
+python train.py --data config/mask.data  --pretrained_weights weights/darknet53.conv.74
 ```
+
+### Dockerfile
+#### Build
+```
+$ docker build --tag yolo:torch-1.13.1-cuda-11.6 .
+```
+
+#### Run docker container
+```
+$ docker run --rm -it  \
+           --name yolo \
+           -v /media/aimlab/HDD00/users/chansoo/PyTorch-YOLOv3:/workspace \
+           -p 8888:8888 \
+           -p 6006:6006 \
+           --gpus all  \
+           --ipc=host \
+           -e JUPYTER_TOKEN=test  \
+           yolo:torch-1.13.1-cuda-11.6
+```
+
 
 ## Installation for Linux
 ### Installing from source
