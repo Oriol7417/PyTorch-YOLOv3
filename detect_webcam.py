@@ -6,7 +6,8 @@ import argparse
 import time
 import os 
 
-from pytorchyolo import detect, models
+from pytorchyolo import models
+import detect
 from pytorchyolo.utils.utils import load_classes
 
 def save_image(img, path, file_prefix):
