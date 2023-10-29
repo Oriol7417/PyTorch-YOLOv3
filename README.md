@@ -55,9 +55,9 @@ python config/create_custom_model.py --name mask --classes data/mask/mask.names
 ```
 #### Train dataset
 ```
-python train.py --model yolov3-{NAME}.cfg --data config/{NAME}.data  --pretrained_weights {PRETRAINED_WEIGHTS}
+python train.py --model config/yolov3-{NAME}.cfg --data config/{NAME}.data  --pretrained_weights {PRETRAINED_WEIGHTS}
 $ Example: mask
-python train.py --model yolov3-mask.cfg --data config/mask.data  --pretrained_weights weights/darknet53.conv.74
+python train.py --model config/yolov3-mask.cfg --data config/mask.data  --pretrained_weights weights/darknet53.conv.74
 ```
 
 ### Dockerfile
