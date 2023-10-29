@@ -47,13 +47,14 @@ def run():
     parser = argparse.ArgumentParser(description="Generate custom dataset.")
     parser.add_argument("-n", "--name", type=str, default="mask", help="Set the name of the custom dataset.")
     parser.add_argument("-c", "--classes", type=str, default="data/mask/mask.names", help="Path to classes label file (.names)")
+    parser.add_argument("-v", "--valid", type=float, default=0.2, help="Valid Ratio (0.2)")
     args = parser.parse_args()
 
     # Generate train.txt and valid.txt
     dataset_path = os.path.join('data', args.name)
     image_path = os.path.join(dataset_path, 'images')
     image_list = get_file_list(image_path, '.jpg')
-    image_list_train, image_list_valid = train_valid_split(image_list)
+    image_list_train, image_list_valid = train_valid_split(image_list, valid_size=args.valid)
     train_txt_file_path = os.path.join(dataset_path, 'train.txt')
     valid_txt_file_path = os.path.join(dataset_path, 'valid.txt')
     save_list(train_txt_file_path, image_list_train)

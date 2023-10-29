@@ -51,7 +51,7 @@ Predefined mask dataset: [link](http://aimlab.synology.me:5000/sharing/dSGCrHFzE
 ```
 python config/create_custom_model.py --name {NAME} --classes data/{NAME}/{NAME}.names
 # Example: mask
-python config/create_custom_model.py --name mask --classes data/mask/mask.names
+python config/create_custom_model.py --name mask --classes data/mask/mask.names --valid 0.1
 ```
 #### Train dataset
 ```
