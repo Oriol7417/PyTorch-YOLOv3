@@ -13,6 +13,7 @@ __pycache__
 checkpoints/
 
 config/yolov3-*.cfg
+config/*.data
 
 .vscode/
 logs/

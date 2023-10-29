@@ -8,7 +8,7 @@ YOLOv4 and YOLOv7 weights are also compatible with this implementation.
 ## Run on Windows
 
 ### Install CUDA
-CUDA 11.7.0: [Link](https://developer.nvidia.com/cuda-11-7-0-download-archive)
+CUDA 11.7.0: [Link](https://developer.nvidia.com/cuda-11-7-0-download-archive) or [cuda_11.7.0_516.01_windows](http://aimlab.synology.me:5000/sharing/uaXzgDpEL)
 
 ### Install packages
 ```
@@ -22,6 +22,12 @@ pip install opencv-python
 ```
 
 ### Example of Inference  
+#### Download pretrained weights
+```bash
+cd weights
+download_weights.bat
+```
+
 #### Example using several images
 ```
 python detect_images.py
@@ -31,14 +37,25 @@ python detect_images.py
 ```
 python detect_webcam.py
 ```
-### Train custom data
+### Train custom dataset
 
+#### Generate dataset
+Using [YOLO Label Tool](https://github.com/Oriol7417/Yolo_Label), extract labels.
+For Windows, you can donwload [YoloLabel_v1.2.1.zip](http://aimlab.synology.me:5000/sharing/UB4fjS4CS).
 
+#### Generate configuration
+Copy images and labels into data/{NAME}/images. Copy {NAME}.names file into data/{NAME}.
 
-#### Download pretrained weights
-```bash
-cd weights
-download_weights.bat
+Predefined mask dataset: [link](http://aimlab.synology.me:5000/sharing/dSGCrHFzE) name-modified by https://github.com/VictorLin000/YOLOv3_mask_detect.
+
+```
+python config/create_custom_model.py --name {NAME} --classes data/{NAME}/{NAME}.names
+# Example: mask
+python config/create_custom_model.py --name mask --classes data/mask/mask.names
+```
+#### Train dataset
+```
+python train --data config/coco.data  --pretrained_weights weights/darknet53.conv.74
 ```
 
 ## Installation for Linux

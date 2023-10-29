@@ -18,7 +18,7 @@ from pytorchyolo.utils.augmentations import AUGMENTATION_TRANSFORMS
 #from pytorchyolo.utils.transforms import DEFAULT_TRANSFORMS
 from pytorchyolo.utils.parse_config import parse_data_config
 from pytorchyolo.utils.loss import compute_loss
-from pytorchyolo.test import _evaluate, _create_validation_data_loader
+from test import _evaluate, _create_validation_data_loader
 
 from terminaltables import AsciiTable
 

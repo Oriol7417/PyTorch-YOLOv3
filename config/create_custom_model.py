@@ -12,14 +12,6 @@ def save_list(file_path, data):
         fp.write('\n'.join(data))
         print('Save', file_path)
 
-def create_train_txt(dataset_path):
-    image_path = os.path.join(dataset_path, 'images')
-    image_list = get_file_list(image_path, '.jpg')
-    txt_list = get_file_list(image_path, '.txt')
-    assert len(image_list) == len(txt_list), 'The number of image files and the number of text files are different in training dataset.'
-    save_list(os.path.join(dataset_path, 'train.txt'), image_list)
-    save_list(os.path.join(dataset_path, 'valid.txt'), txt_list)
-
 def get_num_lines(file_path):
     lines = 0
     with open(file_path, 'r') as fp:
@@ -37,21 +29,40 @@ def edit_template(template_file_path, save_file_path, num_classes, num_filters):
             fp.write(line.replace('NUM_FILTERS', num_filters).replace('NUM_CLASSES', num_classes))
         print('Save', save_file_path)
 
-def create_config(name, classes_file_path):
-    num_classes = get_num_lines(classes_file_path)
-    num_filters = 3 * (num_classes + 5)
-    saved_file_path = os.path.join('config', 'yolov3-' + name + '.cfg')
-    edit_template(os.path.join('config', 'yolov3-template.cfg'),  
-                  saved_file_path, str(num_classes), str(num_filters))
-
 def run():
     parser = argparse.ArgumentParser(description="Generate custom dataset.")
     parser.add_argument("-n", "--name", type=str, default="mask", help="Set the name of the custom dataset.")
     parser.add_argument("-c", "--classes", type=str, default="data/mask/mask.names", help="Path to classes label file (.names)")
     args = parser.parse_args()
 
-    create_train_txt(os.path.join('data', args.name))
-    create_config(args.name, args.classes)
+    # Generate train.txt and valid.txt
+    dataset_path = os.path.join('data', args.name)
+    image_path = os.path.join(dataset_path, 'images')
+    image_list = get_file_list(image_path, '.jpg')
+    txt_list = get_file_list(image_path, '.txt')
+    assert len(image_list) == len(txt_list), 'The number of image files and the number of text files are different in training dataset.'
+    train_txt_file_path = os.path.join(dataset_path, 'train.txt')
+    valid_txt_file_path = os.path.join(dataset_path, 'valid.txt')
+    save_list(train_txt_file_path, image_list)
+    save_list(valid_txt_file_path, txt_list)
 
+    # Get number of classes and number of filters
+    num_classes = get_num_lines(args.classes)
+    num_filters = 3 * (num_classes + 5)
+
+    # Generate yolov3-*.cfg
+    saved_file_path = os.path.join('config', 'yolov3-' + args.name + '.cfg')
+    edit_template(os.path.join('config', 'yolov3-template.cfg'),  
+                  saved_file_path, str(num_classes), str(num_filters))
+
+    # Generate *.data
+    data_file_path = os.path.join('config', args.name + '.data')
+    with open(data_file_path, 'w') as fp:
+        fp.write('classes='+str(num_classes)+'\n')
+        fp.write('train='+train_txt_file_path+'\n')
+        fp.write('valid='+valid_txt_file_path+'\n')
+        fp.write('names='+args.classes+'\n')
+        print('Save', data_file_path)
+        
 if __name__ == "__main__":
     run()
