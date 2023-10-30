@@ -62,6 +62,19 @@ $ Example: mask
 python train.py --model config/yolov3-mask.cfg --data config/mask.data  --pretrained_weights weights/darknet53.conv.74 --epochs 2000 --conf_thres 0.25 --evaluation_interval 25 --checkpoint_interval 25
 ```
 
+### Train custom dataset using docker based on pjreddie/darknet
+```
+wget
+# For Linux Terminal
+docker run --rm -it --gpus '"device=0"' --rm -v $PWD:/workspace -w /workspace daisukekobayashi/darknet:gpu-cv-cc75 darknet detector train config/mask/mask.data config/mask/yolov3-mask.cfg weights/darknet53.conv.74 -dont_show
+
+# For Windows PowerShell
+docker run --rm -it --gpus '"device=0"' --rm -v ${PWD}:/workspace -w /workspace daisukekobayashi/darknet:gpu-cv-cc86 darknet detector train config/mask/mask.data config/mask/yolov3-mask.cfg weights/darknet53.conv.74 -dont_show
+
+# For Windows Cmd
+docker run --rm -it --gpus '"device=0"' --rm -v %cd%:/workspace -w /workspace daisukekobayashi/darknet:gpu-cv-cc86 darknet detector train config/mask/mask.data config/mask/yolov3-mask.cfg weights/darknet53.conv.74 -dont_show
+```
+
 ### Dockerfile
 #### Build
 ```

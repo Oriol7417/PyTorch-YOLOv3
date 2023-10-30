@@ -17,7 +17,7 @@ def save_image(img, path, file_prefix):
     file_list = os.listdir(path)
     file_list_log = [file for file in file_list if file.startswith(file_prefix)]
     count = 1 + len(file_list_log)
-    file_path = os.path.join(path, file_prefix + '{0}.jpg'.format(count))
+    file_path = os.path.join(path, file_prefix + '{0}.jpg'.format(count)).replace("\\","/")
     cv2.imwrite(file_path, img)
 
 def draw_text(img, text,

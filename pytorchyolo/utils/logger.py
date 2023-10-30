@@ -9,7 +9,7 @@ class Logger(object):
         if log_hist:    # Check a new folder for each log should be dreated
             log_dir = os.path.join(
                 log_dir,
-                datetime.datetime.now().strftime("%Y_%m_%d__%H_%M_%S"))
+                datetime.datetime.now().strftime("%Y_%m_%d__%H_%M_%S")).replace("\\","/")
         self.writer = SummaryWriter(log_dir)
 
     def scalar_summary(self, tag, value, step):

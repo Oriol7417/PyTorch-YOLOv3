@@ -6,7 +6,7 @@ import random
 
 def get_file_list(path, extension):
     file_list = os.listdir(path)
-    file_list_extension = [os.path.join(path, file) for file in file_list if file.endswith(extension)]
+    file_list_extension = [os.path.join(path, file).replace("\\","/") for file in file_list if file.endswith(extension)]
     return file_list_extension
 
 def save_list(file_path, data):
@@ -47,35 +47,44 @@ def run():
     parser = argparse.ArgumentParser(description="Generate custom dataset.")
     parser.add_argument("-n", "--name", type=str, default="mask", help="Set the name of the custom dataset.")
     parser.add_argument("-c", "--classes", type=str, default="data/mask/mask.names", help="Path to classes label file (.names)")
-    parser.add_argument("-v", "--valid", type=float, default=0.2, help="Valid Ratio (0.2)")
+    parser.add_argument("-v", "--valid", type=float, default=0.3, help="Valid Ratio (0.3)")
     args = parser.parse_args()
 
     # Generate train.txt and valid.txt
-    dataset_path = os.path.join('data', args.name)
-    image_path = os.path.join(dataset_path, 'images')
+    dataset_path = os.path.join('data', args.name).replace("\\","/")
+    image_path = os.path.join(dataset_path, 'images').replace("\\","/")
     image_list = get_file_list(image_path, '.jpg')
     image_list_train, image_list_valid = train_valid_split(image_list, valid_size=args.valid)
-    train_txt_file_path = os.path.join(dataset_path, 'train.txt')
-    valid_txt_file_path = os.path.join(dataset_path, 'valid.txt')
+    train_txt_file_path = os.path.join(dataset_path, 'train.txt').replace("\\","/")
+    valid_txt_file_path = os.path.join(dataset_path, 'valid.txt').replace("\\","/")
     save_list(train_txt_file_path, image_list_train)
     save_list(valid_txt_file_path, image_list_valid)
+
+    # Generate backup directory
+    backup_path = os.path.join(dataset_path, "backup").replace("\\","/")
+    if not os.path.exists(backup_path):
+        os.makedirs(backup_path)
 
     # Get number of classes and number of filters
     num_classes = get_num_lines(args.classes)
     num_filters = 3 * (num_classes + 5)
 
     # Generate yolov3-*.cfg
-    saved_file_path = os.path.join('config', 'yolov3-' + args.name + '.cfg')
-    edit_template(os.path.join('config', 'yolov3-template.cfg'),  
+    config_path = os.path.join('config', args.name).replace("\\","/")
+    if not os.path.exists(config_path):
+        os.makedirs(config_path)
+    saved_file_path = os.path.join(config_path, 'yolov3-' + args.name + '.cfg').replace("\\","/")
+    edit_template(os.path.join('config', 'yolov3-template.cfg').replace("\\","/"),  
                   saved_file_path, str(num_classes), str(num_filters))
 
     # Generate *.data
-    data_file_path = os.path.join('config', args.name + '.data')
+    data_file_path = os.path.join(config_path, args.name + '.data').replace("\\","/")
     with open(data_file_path, 'w') as fp:
         fp.write('classes='+str(num_classes)+'\n')
         fp.write('train='+train_txt_file_path+'\n')
         fp.write('valid='+valid_txt_file_path+'\n')
         fp.write('names='+args.classes+'\n')
+        fp.write('backup='+backup_path+'\n')
         print('Save', data_file_path)
         
 if __name__ == "__main__":

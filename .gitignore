@@ -12,8 +12,7 @@ weights/*.conv.*
 __pycache__
 checkpoints/
 
-config/yolov3-*.cfg
-config/*.data
+config/*
 
 .vscode/
 logs/
