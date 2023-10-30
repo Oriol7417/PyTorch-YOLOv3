@@ -18,3 +18,4 @@ config/*
 logs/
 
 .python-version
+chart*

@@ -64,15 +64,18 @@ python train.py --model config/yolov3-mask.cfg --data config/mask.data  --pretra
 
 ### Train custom dataset using docker based on pjreddie/darknet
 ```
-wget
-# For Linux Terminal
-docker run --rm -it --gpus '"device=0"' --rm -v $PWD:/workspace -w /workspace daisukekobayashi/darknet:gpu-cv-cc75 darknet detector train config/mask/mask.data config/mask/yolov3-mask.cfg weights/darknet53.conv.74 -dont_show
+# Select current directory
+# - Linux: $PWD
+# - Windows PowerShell: ${PWD}
+# - Windows cmd: %cd%
+#
+# Select nvidia architecture: https://developer.nvidia.com/cuda-gpus
+# - RTX TITAN: gpu-cv-cc75
+# - RTX 2080Ti: gpu-cv-cc75
+# - A5000: gpu-cv-cc86
+# - A6000: gpu-cv-cc86
 
-# For Windows PowerShell
-docker run --rm -it --gpus '"device=0"' --rm -v ${PWD}:/workspace -w /workspace daisukekobayashi/darknet:gpu-cv-cc86 darknet detector train config/mask/mask.data config/mask/yolov3-mask.cfg weights/darknet53.conv.74 -dont_show
-
-# For Windows Cmd
-docker run --rm -it --gpus '"device=0"' --rm -v %cd%:/workspace -w /workspace daisukekobayashi/darknet:gpu-cv-cc86 darknet detector train config/mask/mask.data config/mask/yolov3-mask.cfg weights/darknet53.conv.74 -dont_show
+docker run --rm -it --name yolo --gpus '"device=0"' --rm -v $PWD:/workspace -w /workspace daisukekobayashi/darknet:gpu-cv-cc75 darknet detector train config/mask/mask.data config/mask/yolov3-mask.cfg weights/darknet53.conv.74 -dont_show
 ```
 
 ### Dockerfile
