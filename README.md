@@ -35,6 +35,8 @@ python detect_images.py
 
 #### Example using webcam
 ```
+python detect_webcam.py
+# Example: mask
 python detect_webcam.py --model config/yolov3-mask.cfg --weights checkpoints/yolov3_ckpt_300.pth --classes data/mask/mask.names
 ```
 ### Train custom dataset
@@ -51,13 +53,13 @@ Predefined mask dataset: [link](http://aimlab.synology.me:5000/sharing/dSGCrHFzE
 ```
 python config/create_custom_model.py --name {NAME} --classes data/{NAME}/{NAME}.names
 # Example: mask
-python config/create_custom_model.py --name mask --classes data/mask/mask.names --valid 0.1
+python config/create_custom_model.py --name mask --classes data/mask/mask.names --valid 0.3
 ```
 #### Train dataset
 ```
 python train.py --model config/yolov3-{NAME}.cfg --data config/{NAME}.data  --pretrained_weights {PRETRAINED_WEIGHTS}
 $ Example: mask
-python train.py --model config/yolov3-mask.cfg --data config/mask.data  --pretrained_weights weights/darknet53.conv.74
+python train.py --model config/yolov3-mask.cfg --data config/mask.data  --pretrained_weights weights/darknet53.conv.74 --epochs 2000 --conf_thres 0.25 --evaluation_interval 25 --checkpoint_interval 25
 ```
 
 ### Dockerfile
